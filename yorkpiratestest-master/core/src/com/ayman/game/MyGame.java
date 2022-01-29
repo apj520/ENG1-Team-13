@@ -18,8 +18,12 @@ public class MyGame extends Game {
 	public SpriteBatch batch;
 	public PlayerShip player, player2, player3;
 	public College AnneLister;
+
 	public Weapon playerWeapon;
 	public ArrayList<Bullet> bullets;
+
+	//public Bullet bullet;
+
 
 	//shared resources
 	@Override

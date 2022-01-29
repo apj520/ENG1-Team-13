@@ -16,6 +16,7 @@ public class College extends GameObject{
     public int HP, POINTS;
     public boolean isCaptured;
     public Texture AOE;
+    public boolean isAttacked;
 
     public College() {
 
@@ -23,10 +24,11 @@ public class College extends GameObject{
         y = 900; //150
         width = 174;
         height = 125;
-        HP = 2;
+        HP = 1000;
         POINTS = 500;
 
         isCaptured = false;
+        isAttacked = false;
 
 
         textureAtlas = new TextureAtlas("sprites.txt");

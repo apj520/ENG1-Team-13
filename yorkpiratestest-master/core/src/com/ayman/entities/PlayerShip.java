@@ -30,7 +30,7 @@ public class PlayerShip extends GameObject{
     public Rectangle rectPlayer;
 
 
-    private ArrayList<Bullet> bullets;
+    public ArrayList<Bullet> bullets;
     private final int MAX_BULLETS = 4;
     public int HP = 3;
     public int POINTS = 100;
@@ -129,7 +129,7 @@ public class PlayerShip extends GameObject{
 
     //shoot method placeholder for now
     public void shoot() {
-        if (bullets.size() == MAX_BULLETS) return;
+        if (bullets.size() == MAX_BULLETS) {return;}
         bullets.add(new Bullet(x, y, radians));
     }
 }

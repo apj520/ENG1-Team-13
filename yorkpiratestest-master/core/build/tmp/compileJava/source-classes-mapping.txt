@@ -4,12 +4,12 @@ com/ayman/entities/Weapon.java
  com.ayman.entities.Weapon
 com/ayman/entities/GameObject.java
  com.ayman.entities.GameObject
+com/ayman/entities/College.java
+ com.ayman.entities.College
 com/ayman/entities/PlayerShip.java
  com.ayman.entities.PlayerShip
 com/ayman/game/MyGame.java
  com.ayman.game.MyGame
-com/ayman/entities/College.java
- com.ayman.entities.College
 com/ayman/screen/EndScreen.java
  com.ayman.screen.EndScreen
  com.ayman.screen.EndScreen$1

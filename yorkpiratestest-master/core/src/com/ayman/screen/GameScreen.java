@@ -1,5 +1,6 @@
 package com.ayman.screen;
 
+import com.ayman.entities.Bullet;
 import com.ayman.game.MyGame;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Texture;
@@ -33,7 +34,7 @@ public class GameScreen extends ScreenAdapter {
         game.player2.update(delta);
         //game.player3.update(delta);
         game.playerWeapon.update(delta);
-        //UPDATE BULLETS:
+
 
         //game.player3.x = game.player.x;
         //game.player3.y = game.player.y;
@@ -44,8 +45,26 @@ public class GameScreen extends ScreenAdapter {
 
         //rectPlayer2 = game.player2.sprite.getBoundingRectangle();
 
+        ///*
+        //UPDATE BULLETS:
+        for (int i = 0; i < game.player.bullets.size(); i++) {
+            game.player.bullets.get(i).update(delta);
+            //System.out.println("BULLET UPDATE");
+            if (game.player.bullets.get(i).rectBullet.overlaps(game.AnneLister.rectCollege)) {
+                //game.player.bullets.get(i).BulletCollide = true;
+                game.AnneLister.isAttacked = true;
+                System.out.println("BULLET COLLIDE");
+            }
+            //game.AnneLister.isAttacked = false;
+            //System.out.println("BULLET NOT COLLIDE");
+            if (game.player.bullets.get(i).shouldRemove()) {
+                game.player.bullets.remove(i);
+                i--;
+                System.out.println("BULLET REMOVED");
+            }
+        }
 
-
+        //*/
         //rectPlayer2.x = game.player2.x;
         //rectPlayer2.y = game.player2.y;
 
@@ -66,7 +85,6 @@ public class GameScreen extends ScreenAdapter {
         //DRAW PLAYER:
         game.player.sprite.setPosition(game.player.x, game.player.y);
         game.player.sprite.draw(game.batch);
-        //DRAW BULLETS:
 
         //player2:
         game.player2.sprite.setPosition(game.player2.x, game.player2.y);
@@ -83,8 +101,19 @@ public class GameScreen extends ScreenAdapter {
         //game.player3.sprite.draw(game.batch);
 
         game.font.draw(game.batch, "\nx: "+ game.player.x+"    y: "+game.player.y+" \n   shipAngle: "+game.player.angle+" \n shipR: "+game.player.radians +" \n DX: "+game.player.dx + " DY: "+game.player.dy , 700, 700); //Gdx.graphics.getWidth() * .15f
-        game.font.draw(game.batch, "\nHP: " + game.player.HP + "\nP: " + game.player.POINTS, game.player.x+game.player.width, game.player.y+game.player.height);
+        game.font.draw(game.batch, "\nHP: " + game.player.HP + "\nP: " + game.player.POINTS+ "\nAMMO: " + game.player.bullets.size(), game.player.x+game.player.width, game.player.y+game.player.height);
         game.font.draw(game.batch, "\nHP: " + game.AnneLister.HP + "\nP: " + game.AnneLister.POINTS+ "\nC: " + game.AnneLister.isCaptured, game.AnneLister.x+game.AnneLister.width, game.AnneLister.y+game.AnneLister.height);
+
+        ///*
+        //DRAW BULLETS:
+        for (int i = 0; i < game.player.bullets.size(); i++) {
+            //game.bullets.get(i).bullet;
+            //game.player.bullets.get(i).bulletSprite.setPosition(800+10*i, 800+10*i);
+            game.player.bullets.get(i).bulletSprite.draw(game.batch);
+            System.out.println("BULLET DRAWN");
+        }
+
+         //*/
 
         game.batch.end();
 
@@ -93,6 +122,16 @@ public class GameScreen extends ScreenAdapter {
         game.player.setRight(Gdx.input.isKeyPressed(Input.Keys.RIGHT));
         game.player.setUp(Gdx.input.isKeyPressed(Input.Keys.UP));
 
+
+
+        ///*
+        //bullet fire:
+        if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+            game.player.shoot();
+            System.out.println("BULLET ADDED");
+        }
+
+         //*/
         //player2 controls:
         game.player2.setLeft(Gdx.input.isKeyPressed(Input.Keys.A));
         game.player2.setRight(Gdx.input.isKeyPressed(Input.Keys.D));
@@ -125,6 +164,7 @@ public class GameScreen extends ScreenAdapter {
             System.out.println("AOE Hit");
         }
 
+        /*
         //PLAYER-COLLEGE COLLISION
         boolean isOverlap = game.player.rectPlayer.overlaps(game.AnneLister.rectCollege);
         if ((isOverlap)) {
@@ -142,8 +182,42 @@ public class GameScreen extends ScreenAdapter {
                 game.AnneLister.HP -= 1;
             }
 
+
             //game.setScreen(new EndScreen(game));
+        }*/
+        //BULLET-COLLEGE COLLISION
+        //boolean isBulletOverlap = (game.player.bullets.get(i).rectBullet.overlaps(game.AnneLister.rectCollege));
+        if (game.AnneLister.isAttacked) {
+            if ((game.AnneLister.isCaptured == false)) {
+                game.AnneLister.HP -= 1;
+                System.out.println("COLLEGE ATTACKED");
+                game.AnneLister.isAttacked = false;
+            }
         }
+
+
+
+
+
+
+
+        //PLAYER-COLLEGE COLLISION
+        boolean isOverlap = game.player.rectPlayer.overlaps(game.AnneLister.rectCollege);
+        if ((isOverlap)) {
+            //game.player.x = 800/2;
+            //game.player.y = 150;
+            System.out.println("College Hit");
+            //game.player2.y += (20*delta);
+            //game.player.x = 800/2;
+            //game.player.y = 150;
+            game.player.dx = -3*game.player.dx/2;
+            game.player.dy = -3*game.player.dy/2;
+
+        }
+
+
+
+
 
         //PLAYER DEATH:
         if ((game.player.HP == 0)) {
@@ -162,7 +236,7 @@ public class GameScreen extends ScreenAdapter {
             game.AnneLister.isCaptured = true;
             System.out.println("CAPTURED");
             game.AnneLister.collegeSprite = game.AnneLister.textureAtlas.createSprite("anneLister_island_captured");
-            game.AnneLister.HP = 2;
+            game.AnneLister.HP = 1000;
             game.player.POINTS += game.AnneLister.POINTS;
         }
     }
