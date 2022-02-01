@@ -24,8 +24,9 @@ public class EndScreen extends ScreenAdapter {
 
                 if (keyCode == Input.Keys.ENTER) {
                     game.setScreen(new TitleScreen(game));
+                    //RESET GAME:
+                    game.create();
                 }
-
                 return true;
             }
         });
@@ -33,14 +34,24 @@ public class EndScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(.25f, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.begin();
-        game.font.draw(game.batch, "You win!", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .75f);
-        game.font.draw(game.batch, "Press enter to restart.", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .25f);
-        game.batch.end();
+        game.camera.position.set(game.player.x, game.player.y, 0);
+        //ensures camera maintains aspect ratio of screen:
+        game.camera.viewportWidth = Gdx.graphics.getWidth()/1.75f;
+        game.camera.viewportHeight = Gdx.graphics.getHeight()/1.75f;
+        game.camera.update();
 
+        game.batch.begin();
+        //draw end screen:
+        game.drawEndScreen();
+        if (game.playerWin()) {
+            game.font.draw(game.batch, "YOU WON! \n\nPOINTS: "+game.player.POINTS, game.player.x-100, game.player.y);//Gdx.graphics.getHeight() * .25f
+        } else {
+            game.font.draw(game.batch, "YOU LOST! \n\nPOINTS: "+game.player.POINTS, game.player.x-100, game.player.y);//Gdx.graphics.getHeight() * .25f
+        }
+        game.batch.end();
     }
 
     @Override

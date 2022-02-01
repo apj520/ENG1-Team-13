@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class TitleScreen extends ScreenAdapter{
@@ -31,14 +30,18 @@ public class TitleScreen extends ScreenAdapter{
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0.6f, 1);
-        //camera.position.set(bucket.x, bucket.y, 0);
-        //game.camera.update();
-        //game.batch.setProjectionMatrix(game.camera.combined);
+        ScreenUtils.clear(0, 0, 0, 1);
+
+        game.camera.position.set(game.player.x, game.player.y, 0);
+        //ensures camera maintains aspect ratio of screen:
+        game.camera.viewportWidth = Gdx.graphics.getWidth()/1.75f;
+        game.camera.viewportHeight = Gdx.graphics.getHeight()/1.75f;
+        game.camera.update();
+
         game.batch.begin();
-        game.font.draw(game.batch, "Title Screen!", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .75f);
-        game.font.draw(game.batch, "Collect treasure to win!.", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .5f);
-        game.font.draw(game.batch, "Press space to play.", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .25f);
+        //draw title screen:
+        game.drawTitleScreen();
+        //game.font.draw(game.batch, "WELCOME TO YORK PIRATES! \n\nCAPTURE ALL COLLEGES TO WIN! \n\nPRESS SPACE TO PLAY", game.player.x, game.player.y);
         game.batch.end();
     }
 
